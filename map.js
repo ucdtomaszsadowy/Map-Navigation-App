@@ -1,15 +1,24 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoidG9tYXN6c2Fkb3d5IiwiYSI6ImNsanhjcnYzcTAzbXIzY3F6a2lpbzU3bmUifQ.8pxxn7C8_25v41P2f87mxQ';
 
-navigator.geolocation.getCurrentPosition(rtPosition, errPosition, {enableHighAccuracy: true})
-    
+var map, directions;
+
 function rtPosition(position){
-    mapSet([position.coords.longitude, position.coords.latitude])
+    var userLocation = [position.coords.longitude, position.coords.latitude];
+    if(!map) {
+        mapSet(userLocation);
+    } else {
+        //Update user's current position on the map
+        directions.setOrigin(userLocation);
+        map.flyTo({center: userLocation});
+    }
 }
 
 function errPosition(){}
 
+navigator.geolocation.watchPosition(rtPosition, errPosition, {enableHighAccuracy: true});
+
 function mapSet(center){
-    const map = new mapboxgl.Map({
+    map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/tomaszsadowy/cljxdnelt001s01qj7wjfd3l2',
         center: center,
@@ -19,9 +28,9 @@ function mapSet(center){
     const nav = new mapboxgl.NavigationControl();
     map.addControl(nav, 'bottom-right');
 
-    var directions = new MapboxDirections({
-        accessToken: 'pk.eyJ1IjoidG9tYXN6c2Fkb3d5IiwiYSI6ImNsanhjcnYzcTAzbXIzY3F6a2lpbzU3bmUifQ.8pxxn7C8_25v41P2f87mxQ',
-      });
+    directions = new MapboxDirections({
+        accessToken: mapboxgl.accessToken
+    });
       
-      map.addControl(directions, 'top-left');
+    map.addControl(directions, 'top-left');
 }
