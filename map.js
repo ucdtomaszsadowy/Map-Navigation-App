@@ -32,14 +32,14 @@ function mapSet(center, zoom){
 
     map.addControl(directions, 'top-left');
 
-    // Listen to the route event from the directions object
-    directions.on('route', function(e) {
-        if (e.route) {
-            // Update the current route
-            currentRoute = e.route[0];
-        }
+    directions.on('route', function(ev) {
+        currentRoute = ev.route;  // update the current route
+        // clear the carbon emission calculation
+        document.getElementById('carbonFootprint').innerText = "";
+        document.getElementById('carbonFootprintContainer').style.display = 'none';
     });
 }
+
 
 document.getElementById('startGpsButton').addEventListener('click', function() {
     navigator.geolocation.watchPosition(rtPosition, errPosition, {enableHighAccuracy: true});
@@ -47,17 +47,34 @@ document.getElementById('startGpsButton').addEventListener('click', function() {
 
 document.getElementById('carbonFootprintButton').addEventListener('click', function() {
     if (currentRoute) {
-        var distanceInMeters = currentRoute.distance;
+        var distanceInMeters = currentRoute[0].distance;
         var distanceInMiles = distanceInMeters * 0.000621371;
-        var carbonEmissions = distanceInMiles * 404; // In grams
+        var carbonEmissions = distanceInMiles * 404; // in grams
 
         document.getElementById('carbonFootprint').innerText = `Carbon Emissions: ${carbonEmissions.toFixed(2)} grams`;
+        document.getElementById('carbonFootprintContainer').style.display = 'block';
     }
 });
 
+document.getElementById('fuelCostButton').addEventListener('click', function() {
+    if (currentRoute) {
+        var distanceInMeters = currentRoute[0].distance;
+        var distanceInMiles = distanceInMeters * 0.000621371;
+        
+        var fuelEfficiency = 40; // ireland average
+        var costPerGallon = 5; // ireland average
+        var fuelUsed = distanceInMiles / fuelEfficiency; // fuel used in gallons
+        var cost = fuelUsed * costPerGallon; // total fuel cost
+
+        document.getElementById('fuelCost').innerText = `Fuel Cost: €${cost.toFixed(2)}`;
+        document.getElementById('fuelCostContainer').style.display = 'block';
+    }
+});
+
+
 function rtPosition(position) {
     var userLocation = [position.coords.longitude, position.coords.latitude];
-    //Update user's current position on the map
+    //update user's current position on the map
     directions.setOrigin(userLocation);
     map.flyTo({ center: userLocation });
 }
