@@ -8,16 +8,43 @@
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js"></script>
     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.css" type="text/css">
+
     <title>Map Navigation App</title>
     <style>
-        #map {
-            height : 100vh;
-            width : 100vw;
+        body {
+            margin: 0;
+            padding: 20px;
         }
+        #map {
+            height: calc(100vh - 40px);
+            width: calc(100vw - 40px);
+        }
+        #startGpsButton {
+            position: absolute;
+            top: 700px;
+            left: 30px;
+            
+        }
+        #carbonFootprintButton {
+            position: absolute;
+            top: 740px;
+            left: 30px;
+        }
+
+        #carbonFootprint {
+            position: absolute;
+            top: 740px;
+            left: 220px;
+        }
+
     </style>
+    
     <script src="map.js" defer></script>
 </head>
 <body>
     <div id='map'></div>
+    <button id="startGpsButton">Start GPS</button>
+    <button id="carbonFootprintButton">Calculate Carbon Footprint</button>
+    <span id="carbonFootprint"></span>
 </body>
 </html>
