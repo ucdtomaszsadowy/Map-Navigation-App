@@ -1,6 +1,7 @@
 # Map Navigation App
 
 ## A simple web application that utilizes the Mapbox API for map rendering and navigation. Additionally, it calculates the carbon footprint and fuel cost based on the route.
+![Screenshot 2023-08-26 110701](https://github.com/ucdtomaszsadowy/Map-Navigation-App/assets/102903177/b199526f-706a-4e03-bfbe-9cc126deea9c)
 
 ## Features:
 
